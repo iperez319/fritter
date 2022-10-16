@@ -313,3 +313,45 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if the user is not logged in
+
+#### `GET /api/users` - Update a user's profile
+
+**Body** _(no need to add fields that are not being changed)_
+
+- `username` _{string}_ - The user's username
+- `password` _{string}_ - The user's password
+
+**Returns**
+
+- A success message
+- An object with the update user details (without password)
+
+**Throws**
+
+- `403` if the user is not logged in
+- `400` if username or password is in the wrong format
+- `409` if the username is already in use
+
+#### `GET /api/followers/:userId` - Gets all of a given user's followers
+
+#### `POST /api/followers/:followerId/:followeeId` - Follows a given user
+
+#### `DELETE /api/followers/:followerId/:followeeId` - Unfollows a given user
+
+#### `GET /api/version/:versionId` - Gets a given version
+
+#### `POST /api/version/:freetId` - Creates a new version for a given freet id
+
+#### `DELETE /api/vesion/:versionId` - Deletes a given version
+
+#### `POST /api/archive/:freetId` - Archives a given freet
+
+#### `GET /api/scam_flag/:freetId` - Returns wheter a given freet has been labeled as a scam
+
+#### `POST /api/report/:freetId` - Adds a report for a given freet
+
+#### `GET /api/comments/:parentId` - Gets all the comments for a given parentId which could belong to a Freet or another comment
+
+#### `POST /api/version/:parentId` - Creates a new comment for a given parent id
+
+#### `DELETE /api/comment/:commentId` - Deletes a given comment

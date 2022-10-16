@@ -30,7 +30,7 @@ router.get(
  * Follow a new user.
  *
  * @name POST /api/followers/:followerId/:followeeId
- * @return {FreetResponse} - The created freet
+ * @return {FollowerResponse} - The created freet
  * @throws {403} - If the user is not logged in
  * @throws {404} - If one of the two users could not be found
  * @throws {409} - If user is already following the followee
