@@ -334,24 +334,143 @@ This renders the `index.html` file that will be used to interact with the backen
 
 #### `GET /api/followers/:userId` - Gets all of a given user's followers
 
+**Returns**
+
+- A list of all of a given users followers
+
 #### `POST /api/followers/:followerId/:followeeId` - Follows a given user
+
+**Returns**
+
+- A success message
+- The new follower object
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the one of the user's are invalid
+- `409` if user is already following the followee
 
 #### `DELETE /api/followers/:followerId/:followeeId` - Unfollows a given user
 
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if one of the users does not exist
+
 #### `GET /api/version/:versionId` - Gets a given version
+
+**Returns**
+
+- The version object 
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the versionId is invalid
 
 #### `POST /api/version/:freetId` - Creates a new version for a given freet id
 
+**Body**
+
+- `content` _{string}_ - The new content
+- `freet` _{string}_ - The freet it is associated with
+
+**Returns**
+
+- A success message
+- The newly created version object
+
+**Throws**
+
+- `403` if user is not logged in
+- `403` if freet is not associated with logged in user
+
 #### `DELETE /api/vesion/:versionId` - Deletes a given version
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if there is no logged in user
+- `403` if version does not belong to logged in user
 
 #### `POST /api/archive/:freetId` - Archives a given freet
 
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `403` if freet does not belong to logged in user
+- `404` if freet does not exist
+
 #### `GET /api/scam_flag/:freetId` - Returns wheter a given freet has been labeled as a scam
+
+**Returns**
+
+- A boolean indicating whether a given freet has been labeled as a scam
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `404` if freet does not exist
 
 #### `POST /api/report/:freetId` - Adds a report for a given freet
 
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if there is a user already logged in
+- `404` if freet does not exist
+
 #### `GET /api/comments/:parentId` - Gets all the comments for a given parentId which could belong to a Freet or another comment
+
+**Returns**
+
+- A list of comments for a given parent
+
+**Throws**
+
+- `403` if user is not logged in
+- `404` if the parent does not exist
 
 #### `POST /api/version/:parentId` - Creates a new comment for a given parent id
 
+**Body**
+
+- `content` _{string}_ - The new content
+- `parent` _{string}_ - The parent it is associated with
+
+**Returns**
+
+- A success message
+- The newly created comment object
+
+**Throws**
+
+- `403` if user is not logged in
+- `404` if the parent could not be found
+
 #### `DELETE /api/comment/:commentId` - Deletes a given comment
+
+**Returns**
+
+- A success message
+
+**Throws**
+
+- `403` if user is not logged in
+- `403` if comment is not associated with the logged in user
+- `404` if the comment could not be found
