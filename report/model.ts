@@ -2,33 +2,32 @@ import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
 import type {Freet} from '../freet/model';
+import type {Comment} from '../comment/model';
 
 /**
- * This file defines the properties stored in a Follower
+ * This file defines the properties stored in a Report
  * DO NOT implement operations here ---> use collection file
  */
 
 // Type definition for Freet on the backend
-export type Comment = {
+export type Report = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  author: Types.ObjectId;
-  content: string;
+  reportee: Types.ObjectId;
   parent: Types.ObjectId;
-  dateCreated: Date;
   parentType: 'Comment' | 'Freet';
+  dateCreated: Date;
 };
 
-export type PopulatedComment = {
+export type PopulatedReport = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  author: Types.ObjectId | User;
-  content: string;
+  reportee: Types.ObjectId | User;
   parent: Types.ObjectId | Freet | Comment;
-  dateCreated: Date;
   parentType: 'Comment' | 'Freet';
+  dateCreated: Date;
 };
 
-const CommentSchema = new Schema<Comment>({
-  author: {
+const ReportSchema = new Schema<Report>({
+  reportee: {
     // Use Types.ObjectId outside of the schema
     type: Schema.Types.ObjectId,
     required: true,
@@ -44,15 +43,11 @@ const CommentSchema = new Schema<Comment>({
     type: String,
     enum: ['Comment', 'Freet']
   },
-  content: {
-    type: String,
-    required: true
-  },
   dateCreated: {
     type: Date,
     default: Date.now
   }
 });
 
-const CommentModel = model<Comment>('Comment', CommentSchema);
-export default CommentModel;
+const ReportModel = model<Report>('Report', ReportSchema);
+export default ReportModel;
