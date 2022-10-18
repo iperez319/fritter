@@ -35,5 +35,5 @@ const FollowerSchema = new Schema<Follower>({
   },
 });
 
-const FollowerModel = model<Follower>('Freet', FollowerSchema);
+const FollowerModel = model<Follower>('Follower', FollowerSchema);
 export default FollowerModel;

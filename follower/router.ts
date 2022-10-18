@@ -36,14 +36,16 @@ router.get(
  * @throws {409} - If user is already following the followee
  */
 router.post(
-  '/:followerId/:followeeId',
+  '/:followeeId',
   [
     userValidator.isUserLoggedIn,
-    followerValidator.doUsersExist,
+    userValidator.isCurrentSessionUserExists,
+    userValidator.doUsersExist(['followeeId'], 'params'),
     followerValidator.doesFollowAlreadyExist
   ],
   async (req: Request, res: Response) => {
-    const {followerId, followeeId} = req.params; // Will not be an empty string since its validated in isUserLoggedIn
+    const {followeeId} = req.params;
+    const {userId: followerId} = req.session;
     const followerObj = await FollowerCollection.addOne(followerId, followeeId);
 
     res.status(201).json({
@@ -64,13 +66,15 @@ router.post(
  * @throws {404} - If the one of the users does not exist
  */
 router.delete(
-  '/:followerId/:followeeId',
+  '/:followeeId',
   [
     userValidator.isUserLoggedIn,
-    followerValidator.doUsersExist
+    userValidator.isCurrentSessionUserExists,
+    userValidator.doUsersExist(['followeeId'], 'params'),
   ],
   async (req: Request, res: Response) => {
-    const {followerId, followeeId} = req.params;
+    const {followeeId} = req.params;
+    const {userId: followerId} = req.session;
     await FollowerCollection.unfollow(followerId, followeeId);
     res.status(200).json({
       message: 'Your unfollow request was successfull.'
