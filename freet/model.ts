@@ -1,6 +1,7 @@
 import type {Types, PopulatedDoc, Document} from 'mongoose';
 import {Schema, model} from 'mongoose';
 import type {User} from '../user/model';
+import type {Version} from '../version/model';
 
 /**
  * This file defines the properties stored in a Freet
@@ -12,16 +13,20 @@ export type Freet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: Types.ObjectId;
   dateCreated: Date;
-  content: string;
   dateModified: Date;
+  currentVersion: Types.ObjectId;
+  previousVersions: Types.ObjectId[];
+  visible: boolean;
 };
 
 export type PopulatedFreet = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
   authorId: User;
   dateCreated: Date;
-  content: string;
   dateModified: Date;
+  currentVersion: Version;
+  previousVersions: Version[];
+  visible: boolean;
 };
 
 // Mongoose schema definition for interfacing with a MongoDB table
@@ -41,9 +46,17 @@ const FreetSchema = new Schema<Freet>({
     required: true
   },
   // The content of the freet
-  content: {
-    type: String,
-    required: true
+  // content: {
+  //   type: String,
+  //   required: true
+  // },
+  currentVersion: {
+    type: Schema.Types.ObjectId,
+    ref: 'Version'
+  },
+  previousVersions: {
+    type: [Schema.Types.ObjectId],
+    ref: 'Version'
   },
   // The date the freet was modified
   dateModified: {

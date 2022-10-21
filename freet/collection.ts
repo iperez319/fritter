@@ -1,6 +1,8 @@
 import type {HydratedDocument, Types} from 'mongoose';
 import type {Freet} from './model';
+import type {Version} from '../version/model';
 import FreetModel from './model';
+import VersionCollection from '../version/collection';
 import UserCollection from '../user/collection';
 
 /**
@@ -21,14 +23,20 @@ class FreetCollection {
    */
   static async addOne(authorId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
     const date = new Date();
+
     const freet = new FreetModel({
       authorId,
       dateCreated: date,
-      content,
       dateModified: date
     });
     await freet.save(); // Saves freet to MongoDB
-    return freet.populate('authorId');
+
+    const newVersion = await VersionCollection.addOne(freet._id, 'Freet', content);
+
+    freet.currentVersion = newVersion._id;
+    await freet.save();
+
+    return (await freet.populate('authorId')).populate('currentVersion');
   }
 
   /**
@@ -71,10 +79,30 @@ class FreetCollection {
    */
   static async updateOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({_id: freetId});
-    freet.content = content;
+    const newVersion = await VersionCollection.addOne(freetId, 'Freet', content);
+
     freet.dateModified = new Date();
+    freet.previousVersions.push(freet.currentVersion);
+    freet.currentVersion = newVersion._id;
+
     await freet.save();
-    return freet.populate('authorId');
+    return (await freet.populate('authorId')).populate('currentVersion');
+  }
+
+  /**
+   * Update a freet with the new content
+   *
+   * @param {string} freetId - The id of the freet to be updated
+   * @param {string} content - The new content of the freet
+   * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
+   */
+  static async archiveOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+    const freet = await FreetModel.findOne({_id: freetId});
+
+    freet.visi
+
+    await freet.save();
+    return (await freet.populate('authorId')).populate('currentVersion');
   }
 
   /**
