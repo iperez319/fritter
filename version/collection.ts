@@ -14,7 +14,7 @@ class VersionCollection {
    */
   static async addOne(parentId: Types.ObjectId | string, parentType: 'Comment' | 'Freet', content: string): Promise<HydratedDocument<Version>> {
     const version = new VersionModel({
-      parentId,
+      parent: parentId,
       parentType,
       content
     });
@@ -50,7 +50,7 @@ class VersionCollection {
    * @param {Types.ObjectId | string} versionId - The id of the version
    * @return {Promise<Boolean>} - Returns true if the version was deleted
    */
-  static async deleteOne(versionId: Types.ObjectId | string): Promise<HydratedDocument<PopulatedVersion>> {
+  static async deleteOne(versionId: Types.ObjectId | string): Promise<boolean> {
     const version = await VersionModel.findOneAndDelete({_id: versionId});
     return version !== null;
   }

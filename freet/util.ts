@@ -1,14 +1,16 @@
 import type {HydratedDocument} from 'mongoose';
 import moment from 'moment';
 import type {Freet, PopulatedFreet} from '../freet/model';
+import type {Version} from 'version/model';
 
 // Update this if you add a property to the Freet type!
 type FreetResponse = {
   _id: string;
   author: string;
   dateCreated: string;
-  content: string;
   dateModified: string;
+  previousVersions: Version[];
+  currentVersion: Version;
 };
 
 /**

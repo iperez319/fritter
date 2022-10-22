@@ -34,7 +34,8 @@ const constructVersionResponse = (version: HydratedDocument<Version>): VersionRe
   return {
     ...versionCopy,
     _id: versionCopy._id.toString(),
-    dateCreated: formatDate(version.dateCreated)
+    dateCreated: formatDate(version.dateCreated),
+    parent: versionCopy.parent.toString()
   };
 };
 

@@ -8,6 +8,9 @@
   <script src="/scripts/freet.js"></script>
   <script src="/scripts/user.js"></script>
   <script src="/scripts/follower.js"></script>
+  <script src="/scripts/report.js"></script>
+  <script src="/scripts/comment.js"></script>
+  <script src="/scripts/version.js"></script>
   <script src="/scripts/index.js"></script>
 </head>
 
@@ -131,12 +134,86 @@
         <form id="delete-follower">
           <h3>Delete Follower</h3>
           <div>
-            <label for="followerId">Followee ID:</label>
-            <input id="id" name="id">
+            <label for="followee">Followee ID:</label>
+            <input id="followee" name="followee">
           </div>
           <input type="submit" value="Delete Follower">
         </form>
 
+        <form id="get-follower">
+          <h3>Get Followers</h3>
+          <div>
+            <label for="followee">Followee ID:</label>
+            <input id="followee" name="followee">
+          </div>
+          <input type="submit" value="Get Followers">
+        </form>
+
+        <form id="create-comment">
+          <h3>Create Comment</h3>
+          <div>
+            <label for="parentId">Parent ID:</label>
+            <input id="parentId" name="parentId">
+            <label for="parentType">Parent Type:</label>
+            <select id="parentType" name="parentType">
+              <option value="Freet">Freet</option>
+              <option value="Comment">Comment</option>
+            </select>
+            <label for="content">Content:</label>
+            <textarea id="content" name="content"></textarea>
+          </div>
+          <input type="submit" value="Create Comment">
+        </form>
+
+        <form id="get-comments">
+          <h3>Get Comment</h3>
+          <div>
+            <label for="parentId">Parent ID:</label>
+            <input id="parentId" name="parentId">
+          </div>
+          <input type="submit" value="Get Comments">
+        </form>
+
+        <form id="delete-comment">
+          <h3>Delete Comment</h3>
+          <div>
+            <label for="commentId">Comment ID:</label>
+            <input id="commentId" name="commentId">
+          </div>
+          <input type="submit" value="Delete Comment">
+        </form>
+
+        <form id="create-report">
+          <h3>Create Report</h3>
+          <div>
+            <label for="parentId">Parent ID:</label>
+            <input id="parentId" name="parentId">
+            <label for="parentType">Parent Type:</label>
+            <select id="parentType" name="parentType">
+              <option value="Freet">Freet</option>
+              <option value="Comment">Comment</option>
+            </select>
+          </div>
+          <input type="submit" value="Create Report">
+        </form>
+
+        <form id="get-report">
+          <h3>Get Reports</h3>
+          <div>
+            <label for="parentId">Parent ID:</label>
+            <input id="parentId" name="parentId">
+          </div>
+          <input type="submit" value="Get Reports">
+        </form>
+
+        <form id="get-version">
+          <h3>Get Versions</h3>
+          <div>
+            <label for="parentId">Parent ID:</label>
+            <input id="parentId" name="parentId">
+          </div>
+          <input type="submit" value="Get Versions">
+        </form>
       </div>
     </section>
     <section>

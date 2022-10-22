@@ -39,7 +39,15 @@ const formsAndHandlers = {
   'create-freet': createFreet,
   'edit-freet': editFreet,
   'delete-freet': deleteFreet,
-  'create-follower': createFollower
+  'create-follower': createFollower,
+  'delete-follower': deleteFollower,
+  'get-follower': getFollowers,
+  'create-comment': createComment,
+  'get-comments': getComments,
+  'delete-comment': deleteComment,
+  'create-report': createReport,
+  'get-report': getReports,
+  'get-version': getVersions
 };
 
 // Attach handlers to forms

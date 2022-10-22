@@ -1,10 +1,12 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import CommentCollection from './collection';
+import type {Comment} from './model';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as commentValidator from './middleware';
 import * as util from './util';
+import type {HydratedDocument, Types} from 'mongoose';
 
 const router = express.Router();
 
@@ -20,8 +22,8 @@ router.get(
   '/',
   async (req: Request, res: Response) => {
     const {parentId} = req.query;
-    const comments = await CommentCollection.findByParentId(parentId);
-    const response = comments.map(comment => util.constructCommentResponse(comment));
+    const comments = await CommentCollection.findByParentId(parentId as string);
+    const response = comments.map(comment => util.constructCommentResponse(comment as HydratedDocument<Comment>));
     res.status(200).json(response);
   }
 );
@@ -33,17 +35,15 @@ router.get(
  * @param {Types.ObjectId | string} parentId - The id of the parent which can be a comment or freet
  * @param {"Comment" | "Freet"} parentType - Type of the parent, it can be a freet or comment
  * @param {string} content - content of the comment
- * @return {CommentResponse} - The created freet
+ * @return {CommentResponse} - The created comment
  * @throws {403} - If the user is not logged in
- * @throws {404} - If one of the two users could not be found
- * @throws {409} - If user is already following the followee
+ * @throws {404} - If the author was not found or the parent does not exist
  */
 router.post(
   '/',
   [
     userValidator.isUserLoggedIn,
     userValidator.isCurrentSessionUserExists,
-    userValidator.doUsersExist(['authorId'], 'body'),
     commentValidator.doesParentExist
   ],
   async (req: Request, res: Response) => {
@@ -66,14 +66,15 @@ router.post(
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of
- *                 the freet
+ *                 the comment
  * @throws {404} - If the one of the users does not exist
  */
 router.delete(
   '/:commentId',
   [
     userValidator.isUserLoggedIn,
-    userValidator.isCurrentSessionUserExists
+    userValidator.isCurrentSessionUserExists,
+    commentValidator.currentUserIsAuthor
   ],
   async (req: Request, res: Response) => {
     const {commentId} = req.params;
@@ -84,4 +85,4 @@ router.delete(
   }
 );
 
-export {router as followerRouter};
+export {router as commentRouter};

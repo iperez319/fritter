@@ -29,6 +29,12 @@ function editFreet(fields) {
     .catch(showResponse);
 }
 
+function archiveFreet(fields) {
+  fetch(`/api/freets/${fields.id}/archive`, {method: 'PUT', headers: {'Content-Type': 'application/json'}})
+    .then(showResponse)
+    .catch(showResponse);
+}
+
 function deleteFreet(fields) {
   fetch(`/api/freets/${fields.id}`, {method: 'DELETE'})
     .then(showResponse)

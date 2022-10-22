@@ -62,6 +62,10 @@ const FreetSchema = new Schema<Freet>({
   dateModified: {
     type: Date,
     required: true
+  },
+  visible: {
+    type: Boolean,
+    default: true
   }
 });
 

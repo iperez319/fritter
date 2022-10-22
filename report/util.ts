@@ -34,7 +34,9 @@ const constructReportResponse = (report: HydratedDocument<Report>): ReportRespon
   return {
     ...reportCopy,
     _id: reportCopy._id.toString(),
-    dateCreated: formatDate(report.dateCreated)
+    dateCreated: formatDate(report.dateCreated),
+    reportee: reportCopy.reportee.toString(),
+    parent: reportCopy.parent.toString()
   };
 };
 

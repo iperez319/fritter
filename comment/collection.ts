@@ -16,7 +16,7 @@ class CommentCollection {
   static async addOne(authorId: Types.ObjectId | string, parentId: Types.ObjectId | string, parentType: 'Comment' | 'Freet', content: string): Promise<HydratedDocument<Comment>> {
     const comment = new CommentModel({
       author: authorId,
-      parentId,
+      parent: parentId,
       parentType,
       content
     });
@@ -52,7 +52,7 @@ class CommentCollection {
    * @param {Types.ObjectId | string} commentId - The id of the user
    * @return {Promise<Boolean>} - Returns true if the comment was deleted
    */
-  static async deleteOne(commentId: Types.ObjectId | string): Promise<HydratedDocument<PopulatedComment>> {
+  static async deleteOne(commentId: Types.ObjectId | string): Promise<boolean> {
     const comment = await CommentModel.findOneAndDelete({_id: commentId});
     return comment !== null;
   }

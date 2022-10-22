@@ -5,6 +5,8 @@ import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as reportValidator from './middleware';
 import * as util from './util';
+import type {HydratedDocument} from 'mongoose';
+import type {Report} from './model';
 
 const router = express.Router();
 
@@ -20,8 +22,8 @@ router.get(
   '/',
   async (req: Request, res: Response) => {
     const {parentId} = req.query;
-    const reports = await CommentCollection.findByParentId(parentId);
-    const response = reports.map(report => util.constructReportResponse(report));
+    const reports = await ReportCollection.findByParentId(parentId as string);
+    const response = reports.map(report => util.constructReportResponse(report as HydratedDocument<Report>));
     res.status(200).json(response);
   }
 );
@@ -43,7 +45,7 @@ router.post(
     userValidator.isUserLoggedIn,
     userValidator.isCurrentSessionUserExists,
     reportValidator.doesParentExist,
-    reportValidator.userAlreadyReported
+    reportValidator.didReportPreviously
   ],
   async (req: Request, res: Response) => {
     const {parentId, parentType} = req.body;
@@ -58,4 +60,4 @@ router.post(
   }
 );
 
-export {router as followerRouter};
+export {router as reportRouter};

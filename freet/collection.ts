@@ -90,16 +90,15 @@ class FreetCollection {
   }
 
   /**
-   * Update a freet with the new content
+   * Archives a given freet
    *
    * @param {string} freetId - The id of the freet to be updated
-   * @param {string} content - The new content of the freet
    * @return {Promise<HydratedDocument<Freet>>} - The newly updated freet
    */
-  static async archiveOne(freetId: Types.ObjectId | string, content: string): Promise<HydratedDocument<Freet>> {
+  static async archiveOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
     const freet = await FreetModel.findOne({_id: freetId});
 
-    freet.visi
+    freet.visible = !freet.visible;
 
     await freet.save();
     return (await freet.populate('authorId')).populate('currentVersion');

@@ -141,7 +141,7 @@ router.put(
  *                 of the freet
  * @throws {404} - If the freetId is not valid
  */
- router.put(
+router.put(
   '/:freetId/archive',
   [
     userValidator.isUserLoggedIn,
@@ -149,9 +149,9 @@ router.put(
     freetValidator.isValidFreetModifier
   ],
   async (req: Request, res: Response) => {
-    const freet = await FreetCollection.updateOne(req.params.freetId, req.body.content);
+    const freet = await FreetCollection.archiveOne(req.params.freetId);
     res.status(200).json({
-      message: 'Your freet was updated successfully.',
+      message: 'Your freet was archived successfully.',
       freet: util.constructFreetResponse(freet)
     });
   }

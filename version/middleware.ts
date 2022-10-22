@@ -5,12 +5,14 @@ import * as freetValidator from '../freet/middleware';
 import * as commentValidator from '../comment/middleware';
 
 const doesParentExist = async (req: Request, res: Response, next: NextFunction) => {
-  const {parentType} = req.body;
+  const {parentId, parentType} = req.body;
   if (parentType === 'Comment') {
-    return doesCommentExist(req, res, next);
+    req.body.commentId = parentId as string;
+    return commentValidator.doesCommentExist(req, res, next);
   }
 
   if (parentType === 'Freet') {
+    req.params.freetId = parentId as string;
     return freetValidator.isFreetExists(req, res, next);
   }
 };

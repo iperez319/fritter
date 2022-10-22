@@ -58,7 +58,7 @@ router.post(
 /**
  * Unfollow a user
  *
- * @name DELETE /api/follower/:followerId/:followeeId
+ * @name DELETE /api/follower/:followeeId
  *
  * @return {string} - A success message
  * @throws {403} - If the user is not logged in or is not the author of
@@ -70,7 +70,7 @@ router.delete(
   [
     userValidator.isUserLoggedIn,
     userValidator.isCurrentSessionUserExists,
-    userValidator.doUsersExist(['followeeId'], 'params'),
+    userValidator.doUsersExist(['followeeId'], 'params')
   ],
   async (req: Request, res: Response) => {
     const {followeeId} = req.params;

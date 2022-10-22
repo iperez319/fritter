@@ -175,6 +175,8 @@ The following api routes have already been implemented for you (**Make sure to d
 
 This renders the `index.html` file that will be used to interact with the backend
 
+### Freets
+
 #### `GET /api/freets` - Get all the freets
 
 **Returns**
@@ -239,6 +241,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not the author of the freet
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
+
+### Users
 
 #### `POST /api/users/session` - Sign in user
 
@@ -332,6 +336,8 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if username or password is in the wrong format
 - `409` if the username is already in use
 
+### Followers
+
 #### `GET /api/followers/:userId` - Gets all of a given user's followers
 
 **Returns**
@@ -362,18 +368,22 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if the user is not logged in
 - `404` if one of the users does not exist
 
-#### `GET /api/version/:versionId` - Gets a given version
+### Version (previously Edit Freet)
+
+Versions will only be created through a synchronization when creating/editing freets or comments.
+
+#### `GET /api/version/?parentId` - Gets a given version
 
 **Returns**
 
-- The version object 
+- A list of a versions for a given parent
 
 **Throws**
 
 - `403` if the user is not logged in
-- `404` if the versionId is invalid
+- `404` if the parentId is invalid
 
-#### `POST /api/version/:freetId` - Creates a new version for a given freet id
+<!-- #### `POST /api/version/:freetId` - Creates a new version for a given freet id
 
 **Body**
 
@@ -399,9 +409,9 @@ This renders the `index.html` file that will be used to interact with the backen
 **Throws**
 
 - `403` if there is no logged in user
-- `403` if version does not belong to logged in user
+- `403` if version does not belong to logged in user -->
 
-#### `POST /api/archive/:freetId` - Archives a given freet
+<!-- #### `POST /api/archive/:freetId` - Archives a given freet
 
 **Returns**
 
@@ -411,9 +421,10 @@ This renders the `index.html` file that will be used to interact with the backen
 
 - `403` if there is a user already logged in
 - `403` if freet does not belong to logged in user
-- `404` if freet does not exist
+- `404` if freet does not exist -->
 
-#### `GET /api/scam_flag/:freetId` - Returns wheter a given freet has been labeled as a scam
+### Reports (previously Scam Flags)
+#### `GET /api/reports/:freetId` - Returns wheter a given freet has been labeled as a scam
 
 **Returns**
 
@@ -424,7 +435,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if there is a user already logged in
 - `404` if freet does not exist
 
-#### `POST /api/report/:freetId` - Adds a report for a given freet
+#### `POST /api/reports/:freetId` - Adds a report for a given freet
 
 **Returns**
 
@@ -435,6 +446,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if there is a user already logged in
 - `404` if freet does not exist
 
+### Comments
 #### `GET /api/comments/:parentId` - Gets all the comments for a given parentId which could belong to a Freet or another comment
 
 **Returns**
@@ -446,7 +458,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if user is not logged in
 - `404` if the parent does not exist
 
-#### `POST /api/version/:parentId` - Creates a new comment for a given parent id
+#### `POST /api/comments/:parentId` - Creates a new comment for a given parent id
 
 **Body**
 
@@ -463,7 +475,7 @@ This renders the `index.html` file that will be used to interact with the backen
 - `403` if user is not logged in
 - `404` if the parent could not be found
 
-#### `DELETE /api/comment/:commentId` - Deletes a given comment
+#### `DELETE /api/comments/:commentId` - Deletes a given comment
 
 **Returns**
 

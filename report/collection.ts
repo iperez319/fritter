@@ -12,10 +12,10 @@ class ReportCollection {
    * @param {"Comment" | "Freet"} parentType - Type of the parent, it can be a freet or comment
    * @return {Promise<HydratedDocument<Report>>} - The newly created report
    */
-  static async addOne(reporteeId: Types.ObjectId | string, parentId: Types.ObjectId | string, parentType: 'Comment' | 'Freet', content: string): Promise<HydratedDocument<Report>> {
+  static async addOne(reporteeId: Types.ObjectId | string, parentId: Types.ObjectId | string, parentType: 'Comment' | 'Freet'): Promise<HydratedDocument<Report>> {
     const report = new ReportModel({
       reportee: reporteeId,
-      parentId,
+      parent: parentId,
       parentType
     });
     await report.save(); // Saves freet to MongoDB
@@ -40,7 +40,7 @@ class ReportCollection {
    * @param {Types.ObjectId | string} reporteeId - The id of the reportee
    * @return {Promise<Boolean>} - Whether the user has already reported the parent
    */
-  static async hasAlreadyReported(parentId: Types.ObjectId | string, reporteeId: Types.ObjectId | string): Promise<HydratedDocument<PopulatedReport>> {
+  static async hasAlreadyReported(parentId: Types.ObjectId | string, reporteeId: Types.ObjectId | string): Promise<boolean> {
     const report = await ReportModel.findOne({parent: parentId, reportee: reporteeId, dateCreated: {$gt: new Date(Date.now() - 24 * 60 * 60 * 1000)}});
     return report !== null;
   }
