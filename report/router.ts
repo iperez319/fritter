@@ -1,14 +1,19 @@
 import type {NextFunction, Request, Response} from 'express';
 import express from 'express';
 import ReportCollection from './collection';
+import FreetCollection from '../freet/collection';
+import CommentCollection from '../comment/collection';
+import FollowerCollection from '../follower/collection';
 import * as userValidator from '../user/middleware';
 import * as freetValidator from '../freet/middleware';
 import * as reportValidator from './middleware';
 import * as util from './util';
 import type {HydratedDocument} from 'mongoose';
-import type {Report} from './model';
+import type {PopulatedReport, Report} from './model';
+import e from 'express';
 
 const router = express.Router();
+const SCAM_FLAG_THRESHOLD = 0.8; // Amount of reports in proportion to users followers before flagging freet as scam
 
 /**
  * Get all reports for a given parent
@@ -23,8 +28,18 @@ router.get(
   async (req: Request, res: Response) => {
     const {parentId} = req.query;
     const reports = await ReportCollection.findByParentId(parentId as string);
-    const response = reports.map(report => util.constructReportResponse(report as HydratedDocument<Report>));
-    res.status(200).json(response);
+
+    let result = false;
+    if (reports.length > 0) {
+      const report = reports[0] as PopulatedReport;
+      const parent = report.parentType === 'Freet' ? await FreetCollection.findOne(report.parent) : await CommentCollection.findById(report.parent);
+      const stats = await FollowerCollection.getFollowStats(parent.author._id || parent.author);
+      result = reports.length > SCAM_FLAG_THRESHOLD * (stats.followers ?? 0);
+    }
+
+    res.status(200).json({
+      flag: result
+    });
   }
 );
 

@@ -393,7 +393,6 @@ Versions will only be created through a synchronization when creating/editing fr
 
 **Throws**
 
-- `403` if the user is not logged in
 - `404` if the parentId is invalid
 
 <!-- #### `POST /api/version/:freetId` - Creates a new version for a given freet id
@@ -437,7 +436,7 @@ Versions will only be created through a synchronization when creating/editing fr
 - `404` if freet does not exist -->
 
 ### Reports (previously Scam Flags)
-#### `GET /api/reports/:freetId` - Returns wheter a given freet has been labeled as a scam
+#### `GET /api/reports/:parentId` - Returns wheter a given freet/comment has been labeled as a scam
 
 **Returns**
 

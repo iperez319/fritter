@@ -61,8 +61,7 @@ router.post(
  * @name DELETE /api/follower/:followeeId
  *
  * @return {string} - A success message
- * @throws {403} - If the user is not logged in or is not the author of
- *                 the freet
+ * @throws {403} - If the user is not logged in
  * @throws {404} - If the one of the users does not exist
  */
 router.delete(

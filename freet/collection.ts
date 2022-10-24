@@ -25,7 +25,7 @@ class FreetCollection {
     const date = new Date();
 
     const freet = new FreetModel({
-      authorId,
+      author: authorId,
       dateCreated: date,
       dateModified: date
     });
@@ -36,7 +36,7 @@ class FreetCollection {
     freet.currentVersion = newVersion._id;
     await freet.save();
 
-    return (await freet.populate('authorId')).populate('currentVersion');
+    return (await freet.populate('author')).populate('currentVersion');
   }
 
   /**
@@ -46,7 +46,7 @@ class FreetCollection {
    * @return {Promise<HydratedDocument<Freet>> | Promise<null> } - The freet with the given freetId, if any
    */
   static async findOne(freetId: Types.ObjectId | string): Promise<HydratedDocument<Freet>> {
-    return FreetModel.findOne({_id: freetId}).populate('authorId');
+    return FreetModel.findOne({_id: freetId}).populate('author');
   }
 
   /**
@@ -56,7 +56,7 @@ class FreetCollection {
    */
   static async findAll(): Promise<Array<HydratedDocument<Freet>>> {
     // Retrieves freets and sorts them from most to least recent
-    return FreetModel.find({}).sort({dateModified: -1}).populate('authorId');
+    return FreetModel.find({}).sort({dateModified: -1}).populate('author');
   }
 
   /**
@@ -67,7 +67,7 @@ class FreetCollection {
    */
   static async findAllByUsername(username: string): Promise<Array<HydratedDocument<Freet>>> {
     const author = await UserCollection.findOneByUsername(username);
-    return FreetModel.find({authorId: author._id}).populate('authorId');
+    return FreetModel.find({author: author._id}).populate('author');
   }
 
   /**
@@ -86,7 +86,7 @@ class FreetCollection {
     freet.currentVersion = newVersion._id;
 
     await freet.save();
-    return (await freet.populate('authorId')).populate('currentVersion');
+    return (await freet.populate('author')).populate('currentVersion');
   }
 
   /**
@@ -101,7 +101,7 @@ class FreetCollection {
     freet.visible = !freet.visible;
 
     await freet.save();
-    return (await freet.populate('authorId')).populate('currentVersion');
+    return (await freet.populate('author')).populate('currentVersion');
   }
 
   /**
@@ -121,7 +121,7 @@ class FreetCollection {
    * @param {string} authorId - The id of author of freets
    */
   static async deleteMany(authorId: Types.ObjectId | string): Promise<void> {
-    await FreetModel.deleteMany({authorId});
+    await FreetModel.deleteMany({author: authorId});
   }
 }
 

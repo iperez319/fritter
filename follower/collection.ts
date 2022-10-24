@@ -46,7 +46,7 @@ class FollowerCollection {
    * Returns the number of users that are following a given user and the number of users they are following.
    *
    * @param {Types.ObjectId | string} user - The id of the user
-   * @return {Promise<{following: number, followers: number}>} - True if follower follows the followee
+   * @return {Promise<{following: number, followers: number}>} - The stats of followers and following
    */
   static async getFollowStats(user: Types.ObjectId | string): Promise<{following: number; followers: number}> {
     const followers = ((await FollowerModel.find({followee: user})) || []).length;
