@@ -45,6 +45,7 @@ const formsAndHandlers = {
   'create-comment': createComment,
   'get-comments': getComments,
   'delete-comment': deleteComment,
+  'edit-comment': editComment,
   'create-report': createReport,
   'get-report': getReports,
   'get-version': getVersions
