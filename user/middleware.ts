@@ -165,7 +165,8 @@ const doUsersExist = (fields: string[], reqType: 'body' | 'query' | 'params') =>
       return;
     }
   }
-  next()
+
+  next();
 };
 
 export {

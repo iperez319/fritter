@@ -23,7 +23,7 @@ router.get(
   async (req: Request, res: Response) => {
     const {parentId} = req.query;
     const comments = await CommentCollection.findByParentId(parentId as string);
-    const response = comments.map(comment => util.constructCommentResponse(comment as HydratedDocument<Comment>));
+    const response = comments;
     res.status(200).json(response);
   }
 );
@@ -54,6 +54,33 @@ router.post(
 
     res.status(201).json({
       message: 'Your comment was posted successfully.',
+      comment: util.constructCommentResponse(comment)
+    });
+  }
+);
+
+/**
+ * Modify a comment
+ *
+ * @name PUT /api/comments/:commentId
+ *
+ * @param {string} content - the new content for the comment
+ * @return {CommentResponse} - the updated comment
+ * @throws {403} - if the user is not logged in or not the author of
+ *                 of the comment
+ * @throws {404} - If the commentId is not valid
+ */
+router.put(
+  '/:commentId?',
+  [
+    userValidator.isUserLoggedIn,
+    commentValidator.doesCommentExist,
+    commentValidator.currentUserIsAuthor
+  ],
+  async (req: Request, res: Response) => {
+    const comment = await CommentCollection.updateOne(req.params.commentId, req.body.content);
+    res.status(200).json({
+      message: 'Your comment was updated successfully.',
       comment: util.constructCommentResponse(comment)
     });
   }

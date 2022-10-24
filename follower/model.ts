@@ -10,14 +10,14 @@ import type {User} from '../user/model';
 // Type definition for Freet on the backend
 export type Follower = {
   _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-  follower: Types.ObjectId; 
+  follower: Types.ObjectId;
   followee: Types.ObjectId;
 };
 
 export type PopulatedFollower = {
-    _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
-    follower: User | Types.ObjectId; 
-    followee: User | Types.ObjectId;
+  _id: Types.ObjectId; // MongoDB assigns each object this ID on creation
+  follower: User | Types.ObjectId;
+  followee: User | Types.ObjectId;
 };
 
 const FollowerSchema = new Schema<Follower>({
@@ -32,7 +32,7 @@ const FollowerSchema = new Schema<Follower>({
     type: Schema.Types.ObjectId,
     required: true,
     ref: 'User'
-  },
+  }
 });
 
 const FollowerModel = model<Follower>('Follower', FollowerSchema);

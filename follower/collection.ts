@@ -17,7 +17,7 @@ class FollowerCollection {
       followee
     });
     await followerObj.save(); // Saves freet to MongoDB
-    return (await followerObj.populate("follower")).populate("followee");
+    return (await followerObj.populate('follower')).populate('followee');
   }
 
   /**
@@ -26,8 +26,8 @@ class FollowerCollection {
    * @param {Types.ObjectId | string} user - The id of the user
    * @return {Promise<HydratedDocument<Follower>>} - The newly created Follower
    */
-   static async getAllFollowers(user: Types.ObjectId | string): Promise<HydratedDocument<PopulatedFollower>[]> {
-    const followers = await FollowerModel.find({followee: user}).populate('follower')
+  static async getAllFollowers(user: Types.ObjectId | string): Promise<Array<HydratedDocument<PopulatedFollower>>> {
+    const followers = await FollowerModel.find({followee: user}).populate('follower');
     return followers;
   }
 
@@ -42,16 +42,15 @@ class FollowerCollection {
     return (await FollowerModel.findOne({follower, followee})) !== null;
   }
 
-
   /**
    * Returns the number of users that are following a given user and the number of users they are following.
    *
    * @param {Types.ObjectId | string} user - The id of the user
    * @return {Promise<{following: number, followers: number}>} - True if follower follows the followee
    */
-   static async getFollowStats(user: Types.ObjectId | string): Promise<{following: number, followers: number}> {
-    let followers = ((await FollowerModel.find({followee: user})) || []).length
-    let following = ((await FollowerModel.find({follower: user})) || []).length
+  static async getFollowStats(user: Types.ObjectId | string): Promise<{following: number; followers: number}> {
+    const followers = ((await FollowerModel.find({followee: user})) || []).length;
+    const following = ((await FollowerModel.find({follower: user})) || []).length;
     return {followers, following};
   }
 

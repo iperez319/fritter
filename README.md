@@ -242,6 +242,19 @@ This renders the `index.html` file that will be used to interact with the backen
 - `400` if the new freet content is empty or a stream of empty spaces
 - `413` if the new freet content is more than 140 characters long
 
+#### `PUT /api/freets/:freetId?/archive` - Archive an existing freet
+
+**Returns**
+
+- A success message
+- An object with the updated freet
+
+**Throws**
+
+- `403` if the user is not logged in
+- `404` if the freetId is invalid
+- `403` if the user is not the author of the freet
+
 ### Users
 
 #### `POST /api/users/session` - Sign in user

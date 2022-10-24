@@ -6,7 +6,10 @@ import * as freetValidator from '../freet/middleware';
  * Checks if comment exists
  */
 const doesCommentExist = async (req: Request, res: Response, next: NextFunction) => {
-  const {commentId} = req.body;
+  const {commentId: commentIdBody} = req.body;
+  const {commentId: commentIdParams} = req.params;
+
+  const commentId = commentIdBody as string || commentIdParams;
 
   const state = await CommentCollection.findById(commentId);
 
@@ -43,7 +46,7 @@ const currentUserIsAuthor = async (req: Request, res: Response, next: NextFuncti
 
   if (comment.author !== userId) {
     res.status(403).json({
-      message: 'Not authorized to delete this comment'
+      message: 'Not authorized to modify this comment'
     });
     return;
   }
