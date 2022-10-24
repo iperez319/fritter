@@ -447,19 +447,25 @@ Versions will only be created through a synchronization when creating/editing fr
 - `403` if there is a user already logged in
 - `404` if freet does not exist
 
-#### `POST /api/reports/:freetId` - Adds a report for a given freet
+#### `POST /api/reports` - Adds a report for a given freet
+
+**Body**
+
+- `parentId` _{string}_ - The id of the parent
+- `parentType` _{string}_ - The type of parent (currently supporting comments and freets)
 
 **Returns**
 
 - A success message
+- The report object
 
 **Throws**
 
-- `403` if there is a user already logged in
-- `404` if freet does not exist
+- `403` if the user is not logged in, or has previously added a report within 24 hours.
+- `404` if parent does not exist
 
 ### Comments
-#### `GET /api/comments/:parentId` - Gets all the comments for a given parentId which could belong to a Freet or another comment
+#### `GET /api/comments/?parentId=` - Gets all the comments for a given parentId which could belong to a Freet or another comment
 
 **Returns**
 
@@ -470,12 +476,13 @@ Versions will only be created through a synchronization when creating/editing fr
 - `403` if user is not logged in
 - `404` if the parent does not exist
 
-#### `POST /api/comments/:parentId` - Creates a new comment for a given parent id
+#### `POST /api/comments` - Creates a new comment for a given parent id
 
 **Body**
 
 - `content` _{string}_ - The new content
-- `parent` _{string}_ - The parent it is associated with
+- `parentId` _{string}_ - The parent it is associated with
+- `parentType` _{string}_ - The type of parent (currently supporting comments and freets)
 
 **Returns**
 
@@ -485,7 +492,7 @@ Versions will only be created through a synchronization when creating/editing fr
 **Throws**
 
 - `403` if user is not logged in
-- `404` if the parent could not be found
+- `404` if the parent or author could not be found
 
 #### `DELETE /api/comments/:commentId` - Deletes a given comment
 
@@ -498,3 +505,19 @@ Versions will only be created through a synchronization when creating/editing fr
 - `403` if user is not logged in
 - `403` if comment is not associated with the logged in user
 - `404` if the comment could not be found
+
+#### `PUT /api/comments/:commentId` - Edits the content of a given comment
+
+**Body**
+
+- `content` _{string}_ - The new content
+
+**Returns**
+
+- A success message
+- The new comment object
+
+**Throws**
+
+- `403` if the user is not logged in or not the author of the comment
+- `404` if the commentId is not valid
