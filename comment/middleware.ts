@@ -44,7 +44,7 @@ const currentUserIsAuthor = async (req: Request, res: Response, next: NextFuncti
 
   const comment = await CommentCollection.findById(commentId);
 
-  if (comment.author !== userId) {
+  if (comment.author.toString() !== userId) {
     res.status(403).json({
       message: 'Not authorized to modify this comment'
     });
